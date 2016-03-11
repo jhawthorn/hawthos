@@ -1,8 +1,12 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "multiboot.h"
+
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
+
+multiboot_info_t *multiboot_info;
 
 volatile uint16_t *terminal_buffer = (uint16_t *)0xB8000;
 size_t terminal_pos = 0;

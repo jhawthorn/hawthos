@@ -1,4 +1,4 @@
-# From http://wiki.osdev.org/Bare_bones
+# Based on http://wiki.osdev.org/Bare_bones
 
 # Declare constants used for creating a multiboot header.
 .set ALIGN,    1<<0             # align loaded modules on page boundaries
@@ -34,25 +34,9 @@ stack_top:
 .global _start
 .type _start, @function
 _start:
-	# Welcome to kernel mode! We now have sufficient code for the bootloader to
-	# load and run our operating system. It doesn't do anything interesting yet.
-	# Perhaps we would like to call printf("Hello, World\n"). You should now
-	# realize one of the profound truths about kernel mode: There is nothing
-	# there unless you provide it yourself. There is no printf function. There
-	# is no <stdio.h> header. If you want a function, you will have to code it
-	# yourself. And that is one of the best things about kernel development:
-	# you get to make the entire system yourself. You have absolute and complete
-	# power over the machine, there are no security restrictions, no safe
-	# guards, no debugging mechanisms, there is nothing but what you build.
-
-	# By now, you are perhaps tired of assembly language. You realize some
-	# things simply cannot be done in C, such as making the multiboot header in
-	# the right section and setting up the stack. However, you would like to
-	# write the operating system in a higher level language, such as C or C++.
-	# To that end, the next task is preparing the processor for execution of
-	# such code. C doesn't expect much at this point and we only need to set up
-	# a stack. Note that the processor is not fully initialized yet and stuff
-	# such as floating point instructions are not available yet.
+	# Pointer to the multiboot header structure arrives in ebx. We store
+	# this before we accidentally clobber it.
+	movl %ebx, multiboot_info
 
 	# To set up a stack, we simply set the esp register to point to the top of
 	# our stack (as it grows downwards).
