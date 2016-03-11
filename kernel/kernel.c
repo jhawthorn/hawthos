@@ -14,15 +14,25 @@ void clear() {
 	terminal_pos = 0;
 }
 
-void puts(char *s) {
-	while(*s && terminal_pos < VGA_WIDTH * VGA_HEIGHT) {
-		terminal_buffer[terminal_pos++] = 0x0f00 | *s++;
+void putchar(char c) {
+	if(terminal_pos < VGA_WIDTH * VGA_HEIGHT) {
+		if(c == '\n') {
+			terminal_pos += VGA_WIDTH - (terminal_pos % VGA_WIDTH);
+		} else {
+			terminal_buffer[terminal_pos++] = 0x0f00 | c;
+		}
 	}
-	terminal_pos += VGA_WIDTH - (terminal_pos % VGA_WIDTH);
+}
+
+void print(char *s) {
+	while(*s) {
+		putchar(*s++);
+	}
 }
 
 void kernel_main() {
 	clear();
-	puts("Loaded HawthOS kernel");
-	puts("Version " VERSION);
+	print("Loaded HawthOS kernel\n");
+	print("Version " VERSION "\n");
+	print("\n");
 }
