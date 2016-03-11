@@ -1,8 +1,8 @@
-CC=cc
-AS=as
-ASFLAGS=--32
+CC=i686-elf-gcc
+AS=i686-elf-as
+ASFLAGS=
 CPPFLAGS=
-CFLAGS=-m32 -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+CFLAGS=-std=gnu99 -ffreestanding -O2 -Wall -Wextra
 OBJECTS=boot.o kernel.o
 TARGET=kernel.bin
 
