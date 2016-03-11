@@ -1,7 +1,7 @@
 CC=i686-elf-gcc
 AS=i686-elf-as
 ASFLAGS=
-CPPFLAGS=
+CPPFLAGS=-DVERSION=\"0.1\"
 CFLAGS=-std=gnu99 -ffreestanding -O2 -Wall -Wextra
 OBJECTS=boot.o kernel.o
 TARGET=kernel.bin

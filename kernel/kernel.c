@@ -18,9 +18,11 @@ void puts(char *s) {
 	while(*s && terminal_pos < VGA_WIDTH * VGA_HEIGHT) {
 		terminal_buffer[terminal_pos++] = 0x0f00 | *s++;
 	}
+	terminal_pos += VGA_WIDTH - (terminal_pos % VGA_WIDTH);
 }
 
 void kernel_main() {
 	clear();
 	puts("Loaded HawthOS kernel");
+	puts("Version " VERSION);
 }
