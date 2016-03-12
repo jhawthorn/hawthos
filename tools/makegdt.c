@@ -47,7 +47,13 @@
                      SEG_PRIV(3)     | SEG_DATA_RDWR
 
 void create_descriptor(uint32_t base, uint32_t limit, uint16_t flag) {
-    uint64_t descriptor;
+    uint32_t descriptor;
+
+    // Create the low 32 bit segment
+    descriptor = base  << 16;                       // set base bits 15:0
+    descriptor |= limit  & 0x0000FFFF;               // set limit bits 15:0
+
+    printf(".long 0x%.8lX\n", descriptor);
 
     // Create the high 32 bit segment
     descriptor  =  limit       & 0x000F0000;         // set limit bits 19:16
@@ -55,21 +61,19 @@ void create_descriptor(uint32_t base, uint32_t limit, uint16_t flag) {
     descriptor |= (base >> 16) & 0x000000FF;         // set base bits 23:16
     descriptor |=  base        & 0xFF000000;         // set base bits 31:24
 
-    // Shift by 32 to allow for low part of segment
-    descriptor <<= 32;
-
-    // Create the low 32 bit segment
-    descriptor |= base  << 16;                       // set base bits 15:0
-    descriptor |= limit  & 0x0000FFFF;               // set limit bits 15:0
-
-    printf("0x%.16llX\n", descriptor);
+    printf(".long 0x%.8lX\n", descriptor);
 }
 
 int main(void) {
+    print("# 0x00 Reserved\n");
     create_descriptor(0, 0, 0);
+    print("# 0x08 Code - ring 0\n");
     create_descriptor(0, 0x000FFFFF, (GDT_CODE_PL0));
+    print("# 0x10 Data - ring 0\n");
     create_descriptor(0, 0x000FFFFF, (GDT_DATA_PL0));
+    print("# 0x18 Code - ring 3\n");
     create_descriptor(0, 0x000FFFFF, (GDT_CODE_PL3));
+    print("# 0x20 Data - ring 3\n");
     create_descriptor(0, 0x000FFFFF, (GDT_DATA_PL3));
 
     return 0;
