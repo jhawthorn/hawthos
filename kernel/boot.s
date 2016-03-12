@@ -1,5 +1,8 @@
 # Based on http://wiki.osdev.org/Bare_bones
 
+.set KERNEL_VIRTUAL_BASE, 0xC0000000
+.set KERNEL_PAGE_NUMBER, (KERNEL_VIRTUAL_BASE >> 22)
+
 # Declare constants used for creating a multiboot header.
 .set ALIGN,    1<<0             # align loaded modules on page boundaries
 .set MEMINFO,  1<<1             # provide memory map
@@ -12,28 +15,31 @@
 # You don't need to understand all these details as it is just magic values that
 # is documented in the multiboot standard. The bootloader will search for this
 # magic sequence and recognize us as a multiboot kernel.
-.section .multiboot
+.section .text
 .align 4
 .long MAGIC
 .long FLAGS
 .long CHECKSUM
 
-# Currently the stack pointer register (esp) points at anything and using it may
-# cause massive harm. Instead, we'll provide our own stack. We will allocate
-# room for a small temporary stack by creating a symbol at the bottom of it,
-# then allocating 16384 bytes for it, and finally creating a symbol at the top.
-.section .bootstrap_stack, "aw", @nobits
-stack_bottom:
-.skip 16384 # 16 KiB
-stack_top:
-
-# The linker script specifies _start as the entry point to the kernel and the
-# bootloader will jump to this position once the kernel has been loaded. It
-# doesn't make sense to return from this function as the bootloader is gone.
-.section .text
 .global _start
 .type _start, @function
 _start:
+	movl $(boot_page_directory - KERNEL_VIRTUAL_BASE), %ecx
+	movl %ecx, %cr3
+
+	movl %cr4, %ecx
+	or $0x00000010, %ecx
+	movl %ecx, %cr4
+
+	movl %cr0, %ecx
+	or $0x80000000, %ecx
+	movl %ecx, %cr0
+
+	lea start_higher_half, %ecx
+	jmp *%ecx
+
+start_higher_half:
+
 	# Pointer to the multiboot header structure arrives in ebx. We store
 	# this before we accidentally clobber it.
 	movl %ebx, multiboot_info
@@ -61,3 +67,21 @@ _start:
 # Set the size of the _start symbol to the current location '.' minus its start.
 # This is useful when debugging or when you implement call tracing.
 .size _start, . - _start
+
+.section .data
+.align 0x1000
+boot_page_directory:
+.long 0x00000083
+.rept (KERNEL_PAGE_NUMBER - 1)
+.long 0
+.endr
+.long 0x00000083
+.rept (1024 - KERNEL_PAGE_NUMBER - 1)
+.long 0
+.endr
+
+.section .bss
+.align 32
+stack_bottom:
+.skip 16384 # 16 KiB
+stack_top:
