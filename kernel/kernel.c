@@ -3,6 +3,8 @@
 
 #include "multiboot.h"
 
+void load_gdt();
+
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
 
@@ -58,5 +60,8 @@ void kernel_main() {
 	print("\n");
 	print("mem_upper: ");
 	printnum(multiboot_info->mem_upper, 10);
-	print("\n");
+	print("\n\n");
+
+	load_gdt();
+	print("gdt loaded.");
 }
