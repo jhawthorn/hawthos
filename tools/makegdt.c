@@ -65,15 +65,15 @@ void create_descriptor(uint32_t base, uint32_t limit, uint16_t flag) {
 }
 
 int main(void) {
-    print("# 0x00 Reserved\n");
+    printf("# 0x00 Reserved\n");
     create_descriptor(0, 0, 0);
-    print("# 0x08 Code - ring 0\n");
+    printf("# 0x08 Code - ring 0\n");
     create_descriptor(0, 0x000FFFFF, (GDT_CODE_PL0));
-    print("# 0x10 Data - ring 0\n");
+    printf("# 0x10 Data - ring 0\n");
     create_descriptor(0, 0x000FFFFF, (GDT_DATA_PL0));
-    print("# 0x18 Code - ring 3\n");
+    printf("# 0x18 Code - ring 3\n");
     create_descriptor(0, 0x000FFFFF, (GDT_CODE_PL3));
-    print("# 0x20 Data - ring 3\n");
+    printf("# 0x20 Data - ring 3\n");
     create_descriptor(0, 0x000FFFFF, (GDT_DATA_PL3));
 
     return 0;
