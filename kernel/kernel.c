@@ -3,10 +3,10 @@
 
 #include "multiboot.h"
 #include "print.h"
+#include "pic.h"
 
 void load_gdt();
 void load_idt();
-void pic_init();
 
 multiboot_info_t *multiboot_info;
 

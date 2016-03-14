@@ -40,6 +40,15 @@ static void pic_remap(uint8_t offset1, uint8_t offset2) {
 	outb(PIC2_DATA, a2);
 }
 
+#define PIC_EOI		0x20		/* End-of-interrupt command code */
+
+void pic_eoi(uint8_t irq) {
+	if(irq >= 8)
+		outb(PIC2_COMMAND, PIC_EOI);
+
+	outb(PIC1_COMMAND, PIC_EOI);
+}
+
 void pic_init() {
 	pic_remap(0x20, 0x28);
 }
