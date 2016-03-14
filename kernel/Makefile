@@ -3,7 +3,7 @@ AS=i686-elf-as
 ASFLAGS=
 CPPFLAGS=-DVERSION=\"0.1\"
 CFLAGS=-std=gnu99 -ffreestanding -O2 -Wall -Wextra
-OBJECTS=boot.o kernel.o gdt.o tss.o
+OBJECTS=boot.o kernel.o print.o gdt.o tss.o
 TARGET=kernel.bin
 
 all: $(TARGET)
