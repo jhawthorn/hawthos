@@ -30,7 +30,7 @@ void print(char *s) {
 }
 
 void printnum(uint32_t num, uint32_t radix) {
-	if(num > radix) {
+	if(num >= radix) {
 		printnum(num / radix, radix);
 	}
 	num %= radix;
