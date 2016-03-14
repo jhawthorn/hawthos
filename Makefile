@@ -7,6 +7,10 @@ all: kernel
 test: all
 	qemu-system-i386 -kernel kernel/kernel.bin $(QEMUFLAGS)
 
+test_qemu_debug: all
+	@echo in another terminal run: gdb
+	qemu-system-i386 -S -s -kernel kernel/kernel.bin $(QEMUFLAGS)
+
 test_cdrom: build/test.iso
 	qemu-system-i386 -cdrom build/test.iso $(QEMUFLAGS)
 
@@ -19,7 +23,7 @@ kernel:
 build/test.iso: kernel
 	mkdir -p build/iso/boot/grub
 	cp kernel/kernel.bin build/iso/boot/kernel.bin
-	echo -e "menuentry \"HawthOS\" {\nmultiboot /boot/kernel.bin\n}" > build/iso/boot/grub/grub.cfg
+	echo -e "set timeout=0\nset default=0\nmenuentry \"HawthOS\" {\nmultiboot /boot/kernel.bin\n}" > build/iso/boot/grub/grub.cfg
 	grub-mkrescue -o build/test.iso build/iso
 
 clean:
