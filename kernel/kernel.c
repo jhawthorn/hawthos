@@ -6,6 +6,7 @@
 
 void load_gdt();
 void load_idt();
+void pic_init();
 
 multiboot_info_t *multiboot_info;
 
@@ -22,6 +23,8 @@ void kernel_main() {
 	print("mem_upper: ");
 	printnum(multiboot_info->mem_upper, 10);
 	print("\n\n");
+
+	pic_init();
 
 	load_gdt();
 	print("gdt loaded.\n");
