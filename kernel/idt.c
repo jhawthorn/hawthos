@@ -45,6 +45,4 @@ void load_idt() {
 		set_idt(i, isr_addresses[i], 0);
 	}
 	asm ( "lidt %0" : : "m"(idtr) );
-
-	asm ( "int $0x80" );
 }
