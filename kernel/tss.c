@@ -60,6 +60,6 @@ char tss_stack[0x1000];
 
 tss_t tss = {
 	.ss0 = 0x10,
-	.iopb_offset = 104,
+	.iopb_offset = sizeof(tss_t),
 	.esp0 = (uint32_t)(tss_stack + sizeof(tss_stack))
 };

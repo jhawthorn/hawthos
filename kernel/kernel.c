@@ -5,6 +5,7 @@
 #include "print.h"
 
 void load_gdt();
+void load_idt();
 
 multiboot_info_t *multiboot_info;
 
@@ -23,5 +24,8 @@ void kernel_main() {
 	print("\n\n");
 
 	load_gdt();
-	print("gdt loaded.");
+	print("gdt loaded.\n");
+
+	load_idt();
+	print("idt loaded.\n");
 }
