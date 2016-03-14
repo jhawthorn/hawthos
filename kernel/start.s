@@ -65,7 +65,8 @@ start_higher_half:
 .section .data
 .align 0x1000
 boot_page_directory:
-.long 0x00000083
+#.long 0x00000083
+.long 0x00000085 # HAX: enable user permissions for now
 .rept (KERNEL_PAGE_NUMBER - 1)
 .long 0
 .endr

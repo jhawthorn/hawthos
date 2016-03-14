@@ -3,7 +3,7 @@ AS=i686-elf-as
 ASFLAGS=
 CPPFLAGS=-DVERSION=\"0.1\"
 CFLAGS=-std=gnu99 -ffreestanding -O2 -Wall -Wextra
-OBJECTS=start.o kernel.o print.o gdt.o tss.o idt.o isr.o interrupt.o pic.o
+OBJECTS=start.o kernel.o print.o gdt.o tss.o idt.o isr.o interrupt.o pic.o user.o
 TARGET=kernel.bin
 
 all: $(TARGET)
@@ -15,7 +15,7 @@ all: $(TARGET)
 	$(AS) $(ASFLAGS) -o $@ $<
 
 $(TARGET): $(OBJECTS) linker.ld
-	$(CC) -T linker.ld -o kernel.bin -ffreestanding -nostdlib $(CFLAGS) $(OBJECTS)
+	$(CC) -T linker.ld -o $(TARGET) -ffreestanding -nostdlib $(CFLAGS) $(OBJECTS)
 
 clean:
 	$(RM) $(OBJECTS) $(TARGET)

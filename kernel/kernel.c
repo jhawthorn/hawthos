@@ -10,6 +10,8 @@ void load_idt();
 
 multiboot_info_t *multiboot_info;
 
+void jump_usermode(uint32_t);
+
 void kernel_main() {
 	clear();
 	print("Loaded HawthOS kernel\n");
@@ -25,10 +27,19 @@ void kernel_main() {
 	print("\n\n");
 
 	pic_init();
-
 	load_gdt();
-	print("gdt loaded.\n");
-
 	load_idt();
-	print("idt loaded.\n");
+
+	print("Going to boot things?\n");
+	asm ("sti");
+	if(multiboot_info->mods_count) {
+		multiboot_module_t *mods = (multiboot_module_t *) multiboot_info->mods_addr;
+		printnum(mods[0].mod_start, 16);
+		print("\n");
+		printnum(mods[0].mod_end, 16);
+		print("\n");
+		jump_usermode(mods[0].mod_start);
+	} else {
+		print("No modules specified.\n");
+	}
 }
