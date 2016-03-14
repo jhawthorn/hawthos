@@ -31,19 +31,18 @@ idtr_t idtr = {
 	.base = (uint32_t) &idt[0]
 };
 
-
-
-void set_idt(size_t idx, void *isr, uint8_t dpl) {
-	uint32_t offset = (uint32_t) isr;
+void set_idt(size_t idx, uint32_t offset, uint8_t dpl) {
 	idt[idx].offset_low = offset & 0xffff;
 	idt[idx].offset_high = offset >> 16;
 	idt[idx].selector = KERNEL_CODE_SELECTOR;
 	idt[idx].type = IDT_PRESENT | IDT_GATE_INT32 | IDT_DPL(dpl);
 }
 
+extern uint32_t isr_addresses[0];
+
 void load_idt() {
-	for(int i = 0; i < 256; i++) {
-		set_idt(i, &generic_isr, 0);
+	for(int i = 0; i <= 128; i++) {
+		set_idt(i, isr_addresses[i], 0);
 	}
 	asm ( "lidt %0" : : "m"(idtr) );
 
