@@ -30,14 +30,19 @@ void kernel_main() {
 	load_gdt();
 	load_idt();
 
-	print("Going to boot things?\n");
+	multiboot_module_t *mods = (multiboot_module_t *) multiboot_info->mods_addr;
+
+	for(size_t i = 0; i < multiboot_info->mods_count; i++) {
+		print((char *)mods[i].cmdline);
+		print(":");
+		printnum(mods[i].mod_start, 16);
+		print(" - ");
+		printnum(mods[i].mod_end, 16);
+		print("\n");
+	}
+
 	asm ("sti");
 	if(multiboot_info->mods_count) {
-		multiboot_module_t *mods = (multiboot_module_t *) multiboot_info->mods_addr;
-		printnum(mods[0].mod_start, 16);
-		print("\n");
-		printnum(mods[0].mod_end, 16);
-		print("\n");
 		jump_usermode(mods[0].mod_start);
 	} else {
 		print("No modules specified.\n");
