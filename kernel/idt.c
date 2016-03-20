@@ -19,7 +19,7 @@ typedef struct __attribute__((packed)) {
    uint16_t offset_high; /* offset bits 16..31 */
 } interrupt_descriptor_t;
 
-volatile interrupt_descriptor_t idt[256];
+volatile interrupt_descriptor_t idt[129];
 
 typedef struct __attribute__((__packed__)) {
 	uint16_t size;
@@ -41,8 +41,12 @@ void set_idt(size_t idx, uint32_t offset, uint8_t dpl) {
 extern uint32_t isr_addresses[0];
 
 void load_idt() {
-	for(int i = 0; i <= 128; i++) {
+	for(int i = 0; i <= 127; i++) {
 		set_idt(i, isr_addresses[i], 0);
 	}
+
+	/* int 0x80 is our system call interrupt */
+	set_idt(128, isr_addresses[128], 3);
+
 	asm ( "lidt %0" : : "m"(idtr) );
 }

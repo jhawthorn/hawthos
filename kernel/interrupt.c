@@ -3,6 +3,8 @@
 #include "io.h"
 #include "print.h"
 #include "pic.h"
+#include "task.h"
+#include "tss.h"
 
 void handle_irq(uint32_t irq) {
    if (irq == 0) {

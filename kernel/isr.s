@@ -4,9 +4,16 @@
 isr\num:
 pusha
 cld
+push %ds
+push %es
+mov $0x10, %cx
+mov %cx, %ds
+mov %cx, %es
 push $\num
 call handle_interrupt
 add $4, %esp
+pop %es
+pop %ds
 popa
 iret
 .endm

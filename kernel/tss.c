@@ -1,5 +1,7 @@
 #include <stdint.h>
 
+#include "tss.h"
+
 typedef struct __attribute__((__packed__)) {
 	uint16_t _reserved0;
 	uint16_t link;
@@ -63,3 +65,11 @@ tss_t tss = {
 	.iopb_offset = sizeof(tss_t),
 	.esp0 = (uint32_t)(tss_stack + sizeof(tss_stack))
 };
+
+void tss_set_esp0(uint32_t esp0) {
+	tss.esp0 = esp0;
+}
+
+uint32_t tss_get_esp0() {
+	return tss.esp0;
+}
