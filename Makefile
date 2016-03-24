@@ -33,5 +33,6 @@ build/test.iso: all
 
 clean:
 	$(MAKE) -C kernel clean
+	$(MAKE) -C boot clean
 
 .PHONY: all clean kernel boot test
