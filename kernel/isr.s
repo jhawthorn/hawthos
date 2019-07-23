@@ -9,9 +9,10 @@ push %es
 mov $0x10, %cx
 mov %cx, %ds
 mov %cx, %es
+push %esp
 push $\num
 call handle_interrupt
-add $4, %esp
+add $8, %esp
 pop %es
 pop %ds
 popa
