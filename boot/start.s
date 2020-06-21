@@ -6,5 +6,4 @@ _start:
 	mov $0x1004, %edx
 	int $0x80
 loop:
-	hlt
 	jmp loop

@@ -1,7 +1,7 @@
 TOOLCHAIN=i686-elf-5.2.0-Linux-x86_64
 export PATH := $(shell pwd)/build/$(TOOLCHAIN)/bin:$(PATH)
 
-QEMUFLAGS=-display curses
+QEMUFLAGS=-display curses -serial mon:stdio
 QEMUARGS=-kernel kernel/kernel.bin -initrd boot/boot.bin
 
 all: kernel boot
