@@ -41,6 +41,8 @@ toolchain:
 clean:
 	$(MAKE) -C kernel clean
 	$(MAKE) -C boot clean
-	rm -Rf tmp build
+
+veryclean: clean
+	rm -Rf build
 
 .PHONY: all clean kernel boot test
