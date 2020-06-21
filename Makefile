@@ -1,4 +1,5 @@
-export PATH := $(shell pwd)/build/i686-elf-4.9.1-Linux-x86_64/bin:$(PATH)
+TOOLCHAIN=i686-elf-5.2.0-Linux-x86_64
+export PATH := $(shell pwd)/build/$(TOOLCHAIN)/bin:$(PATH)
 
 QEMUFLAGS=-display curses
 QEMUARGS=-kernel kernel/kernel.bin -initrd boot/boot.bin
@@ -31,8 +32,15 @@ build/test.iso: all
 	cp .grub.cfg build/iso/boot/grub/grub.cfg
 	grub-mkrescue -o build/test.iso build/iso
 
+toolchain:
+	mkdir -p build
+	curl -o build/$(TOOLCHAIN).tar.xz http://newos.org/toolchains/$(TOOLCHAIN).tar.xz
+	tar -C build/ -xvJpf build/$(TOOLCHAIN).tar.xz
+	rm -f build/$(TOOLCHAIN).tar.xz
+
 clean:
 	$(MAKE) -C kernel clean
 	$(MAKE) -C boot clean
+	rm -Rf tmp build
 
 .PHONY: all clean kernel boot test

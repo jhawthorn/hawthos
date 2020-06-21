@@ -3,3 +3,4 @@ build/
 kernel/kernel.bin
 boot/boot.bin
 tools/makegdt
+tmp/
