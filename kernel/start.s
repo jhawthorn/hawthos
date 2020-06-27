@@ -62,19 +62,6 @@ start_higher_half:
 # This is useful when debugging or when you implement call tracing.
 .size _start, . - _start
 
-.section .data
-.align 0x1000
-boot_page_directory:
-#.long 0x00000083
-.long 0x00000085 # HAX: enable user permissions for now
-.rept (KERNEL_PAGE_NUMBER - 1)
-.long 0
-.endr
-.long 0x00000083
-.rept (1024 - KERNEL_PAGE_NUMBER - 1)
-.long 0
-.endr
-
 .section .bss
 .align 32
 stack_bottom:

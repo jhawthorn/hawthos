@@ -36,8 +36,6 @@ void kernel_main() {
 
 	init_page_allocator(multiboot_info);
 
-	return;
-
 	asm ("sti");
 	if(multiboot_info->mods_count) {
 		jump_usermode(mods[0].mod_start);
