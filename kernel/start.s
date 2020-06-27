@@ -78,5 +78,5 @@ boot_page_directory:
 .section .bss
 .align 32
 stack_bottom:
-.skip 16384 # 16 KiB
+.skip 0x1000 # 4 KiB
 stack_top:
