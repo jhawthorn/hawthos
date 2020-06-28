@@ -75,12 +75,9 @@ void handle_interrupt(uint32_t interrupt, task_stack_t *stack) {
       handle_irq(interrupt - 0x20);
       return;
    } else if (interrupt == 0x80) {
-      if (handle_syscall(stack)) {
-	 return;
-      }
-      print("syscall failed\n");
-      dump_task_registers(stack);
-      asm volatile ( "hlt" );
+      uint32_t status = handle_syscall(stack->eax, stack->ebx, stack->ecx, stack->edx);
+      stack->eax = status;
+      return;
    }
    print("Received int 0x");
    printnum(interrupt, 16);
