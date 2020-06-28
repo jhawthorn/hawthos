@@ -14,6 +14,8 @@ multiboot_info_t *multiboot_info;
 
 void jump_usermode(uint32_t);
 
+#define USER_VIRT_ADDRESS 0x08000000
+
 #define BOCHS_BREAK asm volatile ( "xchgw %bx, %bx" )
 
 void kernel_main() {
@@ -45,8 +47,8 @@ void kernel_main() {
 	init_page_allocator(multiboot_info);
 	virtual_memory_init();
 
-	virtual_memory_map(boot_mod_start, boot_mod_start, PAGE_WRITABLE | PAGE_USER);
+	virtual_memory_map(USER_VIRT_ADDRESS, boot_mod_start, PAGE_WRITABLE | PAGE_USER);
 
 	asm ("sti");
-	jump_usermode(boot_mod_start);
+	jump_usermode(USER_VIRT_ADDRESS);
 }
