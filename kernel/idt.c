@@ -9,8 +9,6 @@
 
 #define KERNEL_CODE_SELECTOR 0x08
 
-void generic_isr();
-
 typedef struct __attribute__((packed)) {
    uint16_t offset_low;  /* offset bits 0..15 */
    uint16_t selector;    /* a code segment selector in GDT or LDT */
