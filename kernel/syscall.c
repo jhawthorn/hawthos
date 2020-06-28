@@ -19,6 +19,7 @@ uint32_t handle_syscall(uint32_t number, uint32_t arg1, uint32_t arg2, uint32_t 
 	 }
 
 	 virtual_memory_map(arg1, page_alloc(), PAGE_WRITABLE | PAGE_USER);
+	 return SYSCALL_SUCCESS;
    };
 
    return SYSCALL_FAILURE;
