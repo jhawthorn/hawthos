@@ -60,5 +60,11 @@ void virtual_memory_map(uint32_t virt, uint32_t phys, uint32_t flags) {
 }
 
 void virtual_memory_unmap(uint32_t virt) {
-	(void) virt;
+	if (!(PAGE_DIRECTORY_ENTRY(virt) & PAGE_PRESENT)) {
+	   /* Nothing there */
+	   return;
+	}
+
+	PAGE_TABLE_ENTRY(virt) = 0;
+	invlpg(virt);
 }
