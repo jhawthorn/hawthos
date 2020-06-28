@@ -13,6 +13,8 @@ multiboot_info_t *multiboot_info;
 
 void jump_usermode(uint32_t);
 
+#define BOCHS_BREAK asm volatile ( "xchgw %bx, %bx" )
+
 void kernel_main() {
 	clear();
 	print("Loaded HawthOS kernel\n");
