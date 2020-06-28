@@ -4,7 +4,7 @@
 #include "print.h"
 #include "io.h"
 
-static volatile uint16_t *terminal_buffer = (uint16_t *)0xB8000;
+static volatile uint16_t *terminal_buffer = (uint16_t *)0xC00B8000;
 static size_t terminal_pos = 0;
 
 static void update_cursor() {
