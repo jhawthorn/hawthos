@@ -1,13 +1,18 @@
+
+.macro syscall1 num, arg1
+movl \num, %eax
+movl \arg1, %ebx
+int $0x80
+.endm
+
+.set STACK_TOP,  0xC0000000
+
 .global _start
 _start:
-	movl $stack_top, %esp
+	// Allocate the last pages of userspace to use as the top of our stack
+	syscall1 $0x1001, $(STACK_TOP - 0x1000)
+	movl $(STACK_TOP), %esp
 
 	call main
 loop:
 	jmp loop
-
-.section .data
-.align 32
-stack_bottom:
-.skip 0x4000 # 16 KiB
-stack_top:

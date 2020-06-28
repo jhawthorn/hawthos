@@ -17,6 +17,8 @@ typedef struct __attribute__((__packed__)) {
 	uint32_t ecx;
 	uint32_t eax;
 
+	uint32_t error_code;
+
 	/* interrupt/iretd */
 	uint32_t eip;
 	uint32_t cs;

@@ -9,6 +9,7 @@
 	(((address) & 0xfffff000) | PAGE_PRESENT | flags)
 
 #define PAGE_4MB          (1 << 7)
+#define PAGE_DIRTY        (1 << 6)
 #define PAGE_USER         (1 << 2)
 #define PAGE_WRITABLE     (1 << 1)
 #define PAGE_PRESENT      (1 << 0)
