@@ -3,10 +3,20 @@ _start:
 	movl $stack_top, %esp
 	push %eax
 
-	mov $0x1001, %eax
-	mov $0x1002, %ebx
-	mov $0x1003, %ecx
-	mov $0x1004, %edx
+	mov $0x1000, %eax
+	mov $'h', %ebx
+	int $0x80
+	mov $0x1000, %eax
+	mov $'e', %ebx
+	int $0x80
+	mov $0x1000, %eax
+	mov $'l', %ebx
+	int $0x80
+	mov $0x1000, %eax
+	mov $'l', %ebx
+	int $0x80
+	mov $0x1000, %eax
+	mov $'o', %ebx
 	int $0x80
 loop:
 	jmp loop

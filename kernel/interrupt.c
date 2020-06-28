@@ -5,6 +5,7 @@
 #include "pic.h"
 #include "task.h"
 #include "tss.h"
+#include "syscall.h"
 
 void handle_irq(uint32_t irq) {
    if (irq == 0) {
@@ -39,7 +40,6 @@ static void dump_task_registers(task_stack_t *stack) {
    DUMP_REGISTER(esp)
    DUMP_REGISTER(ss)
 }
-#undef DUMP_REGISTER
 
 #define INT_GENERAL_PROTECTION_FAULT 0xd
 #define INT_PAGE_FAULT 0xe
@@ -75,11 +75,16 @@ void handle_interrupt(uint32_t interrupt, task_stack_t *stack) {
       handle_irq(interrupt - 0x20);
       return;
    } else if (interrupt == 0x80) {
-      print("syscall\n");
+      if (handle_syscall(stack)) {
+	 return;
+      }
+      print("syscall failed\n");
       dump_task_registers(stack);
-      return;
+      asm volatile ( "hlt" );
    }
    print("Received int 0x");
    printnum(interrupt, 16);
    print("\n");
 }
+
+#undef DUMP_REGISTER
