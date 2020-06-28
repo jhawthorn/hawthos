@@ -30,7 +30,7 @@ static void reload_cr3() {
    write_cr3(read_cr3());
 }
 
-static inline void invlpg(const void *m) {
+static inline void invlpg(uint32_t m) {
    asm volatile ( "invlpg (%0)" : : "b"(m) : "memory" );
 }
 
@@ -47,7 +47,7 @@ void virtual_memory_map(uint32_t virt, uint32_t phys, uint32_t flags) {
 
 		uint32_t *pt_cur = &PAGE_TABLE_START(virt);
 		uint32_t *pt_end = pt_cur + 1024;
-		invlpg(pt_cur);
+		invlpg((uint32_t)pt_cur);
 		while (pt_cur != pt_end)
 			*pt_cur++ = 0;
 	} else if (PAGE_DIRECTORY_ENTRY(virt) & (PAGE_4MB)) {
