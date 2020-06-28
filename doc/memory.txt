@@ -1,0 +1,4 @@
+0x08000000 - Start of user text segment
+
+0xC0000000 - Kernel space
+0xFFC00000 - Recursive page table map
