@@ -20,7 +20,15 @@ void puts(char *s) {
 	}
 }
 
+extern char _BSS_START[0];
+extern char _BSS_END[0];
+
 int main() {
+	/* Initialize bss section */
+	for (uintptr_t page = (uintptr_t)_BSS_START; page < (uintptr_t)_BSS_END; page += 0x1000) {
+		syscall(0x1001, page, 0, 0, NULL);
+	}
+
 	puts("hello, world\n");
 	return 0;
 }
