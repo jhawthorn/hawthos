@@ -10,6 +10,7 @@
 void load_gdt();
 void load_idt();
 
+/* Address set from start.s */
 multiboot_info_t *multiboot_info;
 
 void jump_usermode(uint32_t);

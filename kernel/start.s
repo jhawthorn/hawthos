@@ -44,6 +44,14 @@ start_higher_half:
 	# this before we accidentally clobber it.
 	movl %ebx, multiboot_info
 
+	movl $_BSS_START, %eax
+	movl $_BSS_END, %ebx
+bss_loop:
+	movb $0, (%eax)
+	inc %eax
+	cmp %eax, %ebx
+	jb bss_loop
+
 	# To set up a stack, we simply set the esp register to point to the top of
 	# our stack (as it grows downwards).
 	movl $stack_top, %esp

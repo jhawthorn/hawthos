@@ -14,7 +14,9 @@ SECTIONS {
    }
 
    .bss : AT(ADDR(.bss) - 0xC0000000) {
+      _BSS_START = .;
       *(COMMON)
       *(.bss)
+      _BSS_END = .;
    }
 }
