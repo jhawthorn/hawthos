@@ -39,6 +39,13 @@ int brk(void *addr) {
 	return 0;
 }
 
+void *sbrk(intptr_t increment) {
+	uintptr_t base = (uintptr_t)heap_end;
+	if (increment)
+		brk((void *)(base + increment));
+	return (void *)base;
+}
+
 void *memset(void *s, int c, size_t n) {
 	char *ptr = s;
 	while (n--) {
