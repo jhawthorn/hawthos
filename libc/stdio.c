@@ -38,3 +38,47 @@ int fputs(const char *s, FILE *stream) {
 int puts(const char *s) {
 	return fputs(s, stdin);
 }
+
+int vfprintf(FILE *stream, const char *format, va_list ap) {
+	while (*format) {
+		char c = *format++;
+		if (c != '%' || *format == '%') {
+			if (c == '%')
+				format++;
+			fputc(c, stream);
+		} else {
+			char fmt = *format++;
+			if (fmt == 'c') {
+				char c = (char) va_arg(ap, int);
+				fputc(c, stream);
+			} else if (fmt == 's') {
+				const char *s = va_arg(ap, const char *);
+				fputs(s, stream);
+			} else {
+				fputc(c, stream);
+				fputc(fmt, stream);
+			}
+		}
+	}
+	return 0;
+}
+
+int vprintf(const char *format, va_list ap) {
+	return vfprintf(stdout, format, ap);
+}
+
+int fprintf(FILE *stream, const char* restrict format, ...) {
+	va_list args;
+	va_start(args, format);
+	int ret = vfprintf(stream, format, args);
+	va_end(args);
+	return ret;
+}
+
+int printf(const char *format, ...) {
+	va_list args;
+	va_start(args, format);
+	int ret = vprintf(format, args);
+	va_end(args);
+	return ret;
+}

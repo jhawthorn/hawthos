@@ -4,6 +4,6 @@
 #include <stdio.h>
 
 int main() {
-	puts("hello, world\n");
+	printf("hello%c %s\n", ',', "world");
 	return 0;
 }

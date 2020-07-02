@@ -14,7 +14,7 @@ all: $(TARGET)
 %.o: %.s
 	$(AS) $(ASFLAGS) -o $@ $<
 
-$(TARGET): $(OBJECTS) linker.ld
+$(TARGET): $(OBJECTS) linker.ld ../libc/libc.a
 	$(CC) -T linker.ld -o $(TARGET) -ffreestanding -nostdlib $(CFLAGS) $(OBJECTS) -L../libc -l c
 
 clean:
