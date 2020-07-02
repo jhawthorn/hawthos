@@ -54,6 +54,21 @@ void *memset(void *s, int c, size_t n) {
 	return s;
 }
 
+void *malloc(size_t size) {
+	return sbrk(size);
+}
+
+void *calloc(size_t size, size_t nmemb) {
+	size_t total_size = size * nmemb;
+	void *ptr = malloc(total_size);
+	memset(ptr, 0, total_size);
+	return ptr;
+}
+
+void free(void *ptr) {
+	(void) ptr;
+}
+
 int main() {
 	/* Initialize bss section */
 	brk(&end);
