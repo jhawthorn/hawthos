@@ -39,6 +39,39 @@ int puts(const char *s) {
 	return fputs(s, stdin);
 }
 
+static const char *hex_lower_chars = "0123456789abcdef";
+static const char *hex_upper_chars = "0123456789ABCDEF";
+#define decimal_chars hex_lower_chars /* reuse first 10 digits */
+#define octal_chars   hex_lower_chars /* reuse first 8 digits */
+
+static int printf_format_unsigned(FILE *stream, unsigned value, const char *digits, int radix) {
+	char buf[32];
+	buf[31] = 0;
+	char *ptr = &buf[31];
+
+	if (value == 0) {
+		*--ptr = digits[0];
+	} else {
+		while (value > 0) {
+			*--ptr = digits[value % radix];
+			value /= radix;
+		}
+	}
+
+	return fputs(ptr, stream);
+}
+
+static int printf_format_signed(FILE *stream, signed value, const char *digits, int radix) {
+	int status;
+
+	if (value < 0) {
+		if ((status = fputc('-', stream)))
+			return status;
+		value = -value;
+	}
+	return printf_format_unsigned(stream, value, digits, radix);
+}
+
 int vfprintf(FILE *stream, const char *format, va_list ap) {
 	while (*format) {
 		char c = *format++;
@@ -55,6 +88,21 @@ int vfprintf(FILE *stream, const char *format, va_list ap) {
 			} else if (fmt == 's') {
 				const char *s = va_arg(ap, const char *);
 				status = fputs(s, stream);
+			} else if (fmt == 'i' || fmt == 'd') {
+				signed val = va_arg(ap, signed);
+				status = printf_format_signed(stream, val, decimal_chars, 10);
+			} else if (fmt == 'u') {
+				unsigned val = va_arg(ap, unsigned);
+				status = printf_format_unsigned(stream, val, decimal_chars, 10);
+			} else if (fmt == 'o') {
+				unsigned val = va_arg(ap, unsigned);
+				status = printf_format_unsigned(stream, val, octal_chars, 8);
+			} else if (fmt == 'x') {
+				unsigned val = va_arg(ap, unsigned);
+				status = printf_format_unsigned(stream, val, hex_lower_chars, 16);
+			} else if (fmt == 'X') {
+				unsigned val = va_arg(ap, unsigned);
+				status = printf_format_unsigned(stream, val, hex_upper_chars, 16);
 			} else {
 				char buf[3] = {c, fmt, 0};
 				status = fputs(buf, stream);
