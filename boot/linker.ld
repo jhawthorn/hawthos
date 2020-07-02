@@ -8,15 +8,16 @@ SECTIONS {
       *(.text)
       *(.rodata*)
    }
+   etext = .;
 
    .data : ALIGN (0x1000) {
       *(.data)
    }
+   edata = .;
 
    .bss : ALIGN(0x1000) {
-      _BSS_START = .;
       *(COMMON)
       *(.bss)
-      _BSS_END = .;
    }
+   end = .;
 }
