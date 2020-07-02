@@ -13,8 +13,12 @@ uint32_t handle_syscall(uint32_t number, uint32_t arg1, uint32_t arg2, uint32_t 
 	 putchar(arg1 & 0xff);
 	 return SYSCALL_SUCCESS;
       case SYSCALL_ALLOC_PAGE:
-	 if ((arg1 & 0xfff) || arg1 >= KERNEL_VIRTUAL_BASE) {
-	    print("ALLOC_PAGE failed\n");
+	 if (arg1 & 0xfff) {
+	    print("ALLOC_PAGE failed: not aligned\n");
+	    return SYSCALL_FAILURE;
+	 }
+	 if (arg1 >= KERNEL_VIRTUAL_BASE) {
+	    print("ALLOC_PAGE failed: in kernel space\n");
 	    return SYSCALL_FAILURE;
 	 }
 

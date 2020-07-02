@@ -23,14 +23,34 @@ void puts(char *s) {
 /* From linker script */
 extern char etext, edata, end;
 
+char *heap_end = &edata;
+
+#define OS_PAGE_SIZE 4096
+
+int brk(void *addr) {
+	uintptr_t heap_page_end = ((uintptr_t)heap_end + OS_PAGE_SIZE - 1) / OS_PAGE_SIZE * OS_PAGE_SIZE;
+
+	while ((uint32_t)addr > heap_page_end) {
+		syscall(0x1001, heap_page_end, 0, 0, NULL);
+		heap_page_end += 0x1000;
+	}
+
+	heap_end = addr;
+	return 0;
+}
+
+void *memset(void *s, int c, size_t n) {
+	char *ptr = s;
+	while (n--) {
+		*ptr++ = c;
+	}
+	return s;
+}
+
 int main() {
 	/* Initialize bss section */
-	for (uintptr_t page = (uintptr_t)&edata; page < (uintptr_t)&end; page += 0x1000) {
-		syscall(0x1001, page, 0, 0, NULL);
-	}
-	for (char *ptr = &edata; ptr < &end; ptr++) {
-		*ptr = 0;
-	}
+	brk(&end);
+	memset(&edata, 0, (uintptr_t)&end - (uintptr_t)&edata);
 
 	puts("hello, world\n");
 	return 0;
