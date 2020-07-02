@@ -19,7 +19,10 @@ test_cdrom: build/test.iso
 test_bochs: build/test.iso
 	bochs -qf .bochs.cfg
 
-boot:
+libc:
+	$(MAKE) -C libc
+
+boot: libc
 	$(MAKE) -C boot
 
 kernel:
@@ -41,8 +44,9 @@ toolchain:
 clean:
 	$(MAKE) -C kernel clean
 	$(MAKE) -C boot clean
+	$(MAKE) -C libc clean
 
 veryclean: clean
 	rm -Rf build
 
-.PHONY: all clean kernel boot test
+.PHONY: all clean kernel boot test libc
