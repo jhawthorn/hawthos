@@ -42,23 +42,26 @@ int puts(const char *s) {
 int vfprintf(FILE *stream, const char *format, va_list ap) {
 	while (*format) {
 		char c = *format++;
+		int status = 0;
 		if (c != '%' || *format == '%') {
 			if (c == '%')
 				format++;
-			fputc(c, stream);
+			status = fputc(c, stream);
 		} else {
 			char fmt = *format++;
 			if (fmt == 'c') {
 				char c = (char) va_arg(ap, int);
-				fputc(c, stream);
+				status = fputc(c, stream);
 			} else if (fmt == 's') {
 				const char *s = va_arg(ap, const char *);
-				fputs(s, stream);
+				status = fputs(s, stream);
 			} else {
-				fputc(c, stream);
-				fputc(fmt, stream);
+				char buf[3] = {c, fmt, 0};
+				status = fputs(buf, stream);
 			}
 		}
+		if (status)
+			return status;
 	}
 	return 0;
 }
