@@ -28,6 +28,9 @@ int main() {
 	for (uintptr_t page = (uintptr_t)&edata; page < (uintptr_t)&end; page += 0x1000) {
 		syscall(0x1001, page, 0, 0, NULL);
 	}
+	for (char *ptr = &edata; ptr < &end; ptr++) {
+		*ptr = 0;
+	}
 
 	puts("hello, world\n");
 	return 0;
