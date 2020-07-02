@@ -3,7 +3,7 @@ AS=i686-elf-as
 ASFLAGS=
 CPPFLAGS=
 CFLAGS=-std=gnu99 -ffreestanding -O2 -Wall -Wextra -Iinclude
-OBJECTS=syscall.o stdlib.o stdio.o string.o
+OBJECTS=crt0.o pre_main.o syscall.o stdlib.o stdio.o string.o
 
 all: libc.a
 

@@ -9,9 +9,11 @@ int $0x80
 
 .global _start
 _start:
-	// Allocate the last pages of userspace to use as the top of our stack
+	# Allocate the last pages of userspace to use as the top of our stack
 	syscall1 $0x1001, $(STACK_TOP - 0x1000)
 	movl $(STACK_TOP), %esp
+
+	call pre_main
 
 	call main
 loop:

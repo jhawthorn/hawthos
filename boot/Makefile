@@ -3,7 +3,7 @@ AS=i686-elf-as
 ASFLAGS=
 CPPFLAGS=
 CFLAGS=-std=gnu99 -ffreestanding -O2 -Wall -Wextra -I../libc/include
-OBJECTS=start.o boot.o
+OBJECTS=boot.o
 TARGET=boot.bin
 
 all: $(TARGET)
