@@ -28,21 +28,13 @@ int fputc(int c, FILE *stream) {
 	}
 }
 
-int putc(int c, FILE *stream) {
-	return fputc(c, stream);
-}
-
-int puts(const char *s) {
+int fputs(const char *s, FILE *stream) {
 	while (*s)
-		if (putchar(*s++))
+		if (putc(*s++, stream))
 			return EOF;
 	return 0;
 }
 
-int fputs(const char *s, FILE *stream) {
-	if (stream == stdin || stream == stdout) {
-		return puts(s);
-	} else {
-		return EOF;
-	}
+int puts(const char *s) {
+	return fputs(s, stdin);
 }

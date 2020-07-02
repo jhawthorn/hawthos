@@ -14,6 +14,7 @@ extern FILE *stderr;
 
 int putchar(int c);
 int fputc(int c, FILE *stream);
-int putc(int c, FILE *stream);
 int puts(const char *s);
 int fputs(const char *s, FILE *stream);
+
+#define putc(c, stream) fputc(c, stream)
