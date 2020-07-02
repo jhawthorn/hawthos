@@ -1,4 +1,5 @@
 *.o
+*.a
 build/
 kernel/kernel.bin
 boot/boot.bin
