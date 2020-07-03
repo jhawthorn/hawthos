@@ -29,8 +29,14 @@ void *sbrk(intptr_t increment) {
 	return (void *)base;
 }
 
+static size_t malloc_usable_size(void *ptr) {
+	return *((uintptr_t *)ptr - 1);
+}
+
 void *malloc(size_t size) {
-	return sbrk(size);
+	uintptr_t *ptr = sbrk(size + sizeof(uintptr_t));
+	*ptr = size;
+	return (void *)(ptr + 1);
 }
 
 void *calloc(size_t size, size_t nmemb) {
@@ -44,3 +50,10 @@ void free(void *ptr) {
 	(void) ptr;
 }
 
+void *realloc(void *ptr, size_t size) {
+	size_t old_size = malloc_usable_size(ptr);
+	void *new_ptr = malloc(size);
+	memcpy(new_ptr, ptr, old_size);
+	free(ptr);
+	return new_ptr;
+}
