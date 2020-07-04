@@ -42,7 +42,7 @@ start_higher_half:
 
 	# Pointer to the multiboot header structure arrives in ebx. We store
 	# this before we accidentally clobber it.
-	movl %ebx, multiboot_info
+	movl %ebx, multiboot_info_addr
 
 	movl $_BSS_START, %eax
 	movl $_BSS_END, %ebx
