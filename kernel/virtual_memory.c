@@ -12,17 +12,25 @@ uint32_t boot_page_directory[1024] __attribute__ ((aligned(0x1000))) = {
    [KERNEL_PAGE_DIRECTORY_INDEX] = PAGE_ENTRY(0, PAGE_4MB | PAGE_WRITABLE),
 };
 
-#define PAGE_DIRECTORY_ENTRY(addr) (((uint32_t *)0xFFFFF000)[PAGE_DIRECTORY_INDEX(addr)])
-#define PAGE_TABLE_ENTRY(addr) (((uint32_t *)0xFFC00000)[ADDRESS_TO_PAGE_NUMBER(addr)])
+#define PAGE_TABLE_MAPPING 0xFFC00000
+#define PAGE_DIR_MAPPING 0xFFFFF000
+#define PAGE_DIRECTORY_ENTRY(addr) (((uint32_t *)PAGE_DIR_MAPPING)[PAGE_DIRECTORY_INDEX(addr)])
+#define PAGE_TABLE_ENTRY(addr) (((uint32_t *)PAGE_TABLE_MAPPING)[ADDRESS_TO_PAGE_NUMBER(addr)])
 #define PAGE_TABLE_START(addr) PAGE_TABLE_ENTRY(addr & 0xFFC00000)
 
-static uint32_t read_cr3(void) {
+#define TEMP_PAGE_TABLE_MAPPING 0xFF800000
+#define TEMP_PAGE_DIR_MAPPING 0xFFBFF000
+#define TEMP_PAGE_DIRECTORY_ENTRY(addr) (((uint32_t *)TEMP_PAGE_DIR_MAPPING)[PAGE_DIRECTORY_INDEX(addr)])
+#define TEMP_PAGE_TABLE_ENTRY(addr) (((uint32_t *)TEMP_PAGE_TABLE_MAPPING)[ADDRESS_TO_PAGE_NUMBER(addr)])
+#define TEMP_PAGE_TABLE_START(addr) TEMP_PAGE_TABLE_ENTRY(addr & 0xFFC00000)
+
+uint32_t read_cr3(void) {
     uint32_t val;
     asm volatile ( "mov %%cr3, %0" : "=r"(val) );
     return val;
 }
 
-static void write_cr3(uint32_t val) {
+void write_cr3(uint32_t val) {
     asm volatile ( "mov %0, %%cr3" : : "r"(val) );
 }
 
@@ -67,4 +75,23 @@ void virtual_memory_unmap(uint32_t virt) {
 
 	PAGE_TABLE_ENTRY(virt) = 0;
 	invlpg(virt);
+}
+
+void virtual_memory_new_dir() {
+	uint32_t *virt_page_dir = (uint32_t *)0xFFFFE000;
+	uint32_t phys_page_dir = page_alloc();
+
+	PAGE_DIRECTORY_ENTRY(TEMP_PAGE_TABLE_MAPPING) = PAGE_ENTRY(phys_page_dir, 0);
+	invlpg((uint32_t)virt_page_dir);
+
+	for(uint32_t i = 0; i < 1024; i++)
+		virt_page_dir[i] = 0;
+
+	virt_page_dir[KERNEL_PAGE_DIRECTORY_INDEX] = PAGE_ENTRY(0, PAGE_4MB | PAGE_WRITABLE);
+	virt_page_dir[1023] = PAGE_ENTRY(phys_page_dir, PAGE_WRITABLE);
+
+	PAGE_DIRECTORY_ENTRY(TEMP_PAGE_TABLE_MAPPING) = 0;
+	invlpg((uint32_t)virt_page_dir);
+
+	write_cr3(phys_page_dir);
 }

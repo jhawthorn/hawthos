@@ -2,5 +2,6 @@
 
 0xBFFFFFFF - top of userspace stack
 0xC0000000 - Kernel space
+0xFF800000 - Temporary page directory/table mapping
 0xFFC00000 - Recursive page table map
 0xFFFFF000 - Recursive page directory map
