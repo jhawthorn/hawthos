@@ -28,3 +28,6 @@ typedef struct __attribute__((__packed__)) {
 	uint32_t esp;
 	uint32_t ss;
 } task_stack_t;
+
+/* Create a new task and switch to it */
+int create_task();

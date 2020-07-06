@@ -16,7 +16,7 @@
 
 void virtual_memory_init();
 void virtual_memory_map(uint32_t virt, uint32_t phys, uint32_t flags);
-void virtual_memory_new_dir();
+uint32_t virtual_memory_new_dir();
 void virtual_memory_unmap(uint32_t virt);
 
 uint32_t read_cr3(void);

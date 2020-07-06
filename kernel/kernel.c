@@ -51,6 +51,8 @@ void kernel_main() {
 	uint32_t boot_mod_start = mods[0].mod_start;
 	uint32_t boot_mod_end   = mods[0].mod_end;
 
+	create_task();
+
 	for (uint32_t page = 0; page < boot_mod_end - boot_mod_start; page += 0x1000) {
 		virtual_memory_map(USER_VIRT_ADDRESS+page, boot_mod_start+page, PAGE_WRITABLE | PAGE_USER);
 	}

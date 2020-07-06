@@ -77,7 +77,7 @@ void virtual_memory_unmap(uint32_t virt) {
 	invlpg(virt);
 }
 
-void virtual_memory_new_dir() {
+uint32_t virtual_memory_new_dir() {
 	uint32_t *virt_page_dir = (uint32_t *)0xFFFFE000;
 	uint32_t phys_page_dir = page_alloc();
 
@@ -93,5 +93,5 @@ void virtual_memory_new_dir() {
 	PAGE_DIRECTORY_ENTRY(TEMP_PAGE_TABLE_MAPPING) = 0;
 	invlpg((uint32_t)virt_page_dir);
 
-	write_cr3(phys_page_dir);
+	return phys_page_dir;
 }

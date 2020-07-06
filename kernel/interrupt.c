@@ -7,6 +7,8 @@
 #include "tss.h"
 #include "syscall.h"
 
+#define BOCHS_BREAK asm volatile ( "xchgw %bx, %bx" )
+
 void handle_irq(uint32_t irq) {
    if (irq == 0) {
       /* timer */
