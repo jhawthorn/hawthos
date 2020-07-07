@@ -24,7 +24,9 @@ void handle_irq(uint32_t irq) {
 #define INT_GENERAL_PROTECTION_FAULT 0xd
 #define INT_PAGE_FAULT 0xe
 
-void handle_interrupt(uint32_t interrupt, task_stack_t *stack) {
+void handle_interrupt(uint32_t interrupt) {
+   task_stack_t *stack = &current_task()->stack;
+
    if(interrupt == INT_PAGE_FAULT) {
       uint32_t address;
       asm volatile ( "mov %%cr2, %0" : "=r"(address) );

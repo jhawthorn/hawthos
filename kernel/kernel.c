@@ -62,5 +62,5 @@ void kernel_main() {
 	set_task(0);
 
 	asm ("sti");
-	jump_usermode(USER_VIRT_ADDRESS);
+	return_to_task();
 }

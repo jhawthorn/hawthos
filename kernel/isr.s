@@ -1,3 +1,12 @@
+.global resume_from_task_stack
+resume_from_task_stack:
+	mov 0x4(%esp), %esp
+	pop %es
+	pop %ds
+	popa
+	add $4, %esp
+	iret
+
 .macro define_isr num, error=0
 .global isr\num
 .align 16
