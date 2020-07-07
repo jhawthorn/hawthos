@@ -42,7 +42,7 @@ typedef struct {
 int create_task();
 task_t *current_task();
 void set_task(int task_id);
-void return_to_task();
+_Noreturn void return_to_task();
 int next_task_id();
 
 void dump_task_registers(task_stack_t *stack);

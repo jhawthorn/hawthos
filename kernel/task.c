@@ -81,7 +81,7 @@ void dump_task_registers(task_stack_t *stack) {
 }
 #undef DUMP_REGISTER
 
-uint32_t resume_from_task_stack();
+_Noreturn uint32_t resume_from_task_stack();
 
 void return_to_task() {
    uint32_t esp = (uint32_t)&current_task()->stack;
