@@ -29,6 +29,12 @@ typedef struct __attribute__((__packed__)) {
 	uint32_t ss;
 } task_stack_t;
 
+typedef enum {
+	TASK_NONE = 0,
+	TASK_RUNNING = 1,
+	TASK_EXITED = 2,
+} task_state_t;
+
 typedef struct {
 	task_stack_t stack __attribute__ ((aligned(64)));
 	char stack_end[0];
@@ -43,6 +49,7 @@ int create_task();
 task_t *current_task();
 void set_task(int task_id);
 _Noreturn void return_to_task();
-int next_task_id();
+void switch_to_next_running_task();
+void exit_current_task();
 
 void dump_task_registers(task_stack_t *stack);

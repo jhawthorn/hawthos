@@ -17,10 +17,6 @@ void set_task(int task_id) {
    write_cr3(tasks[task_id].cr3);
 }
 
-int next_task_id() {
-   return (current_task_id + 1) % total_tasks;
-}
-
 task_t *current_task() {
    return &tasks[current_task_id];
 }
@@ -30,7 +26,7 @@ int create_task() {
    task_t *task = &tasks[task_id];
 
    task->task_id = task_id;
-   task->state = 0;
+   task->state = TASK_RUNNING;
    task->cr3 = virtual_memory_new_dir();
 
    /* initialize stack */
@@ -86,4 +82,25 @@ _Noreturn uint32_t resume_from_task_stack();
 void return_to_task() {
    uint32_t esp = (uint32_t)&current_task()->stack;
    resume_from_task_stack(esp);
+}
+
+void switch_to_next_running_task() {
+   int task_id = current_task_id;
+   int previous_task = task_id;
+   do {
+      task_id = (task_id + 1) % total_tasks;
+      if (tasks[task_id].state == TASK_RUNNING)
+	 break;
+   } while(task_id != previous_task);
+
+   if (tasks[task_id].state != TASK_RUNNING) {
+      print("ERROR: No remaining tasks to run\n");
+      for(;;);
+   }
+   set_task(task_id);
+}
+
+void exit_current_task() {
+   current_task()->state = TASK_EXITED;
+   switch_to_next_running_task();
 }

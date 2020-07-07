@@ -59,6 +59,7 @@ void handle_interrupt(uint32_t interrupt) {
    } else if (interrupt == 0x80) {
       uint32_t status = handle_syscall(stack->eax, stack->ebx, stack->ecx, stack->edx, &stack->ebx);
       stack->eax = status;
+      return_to_task();
       return;
    }
    print("Received int 0x");
