@@ -5,7 +5,7 @@
 #include "print.h"
 #include "virtual_memory.h"
 
-task_t tasks[32];
+task_t tasks[32] __attribute__ ((aligned(64)));
 int current_task_id = 0;
 int total_tasks = 0;
 

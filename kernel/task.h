@@ -30,11 +30,12 @@ typedef struct __attribute__((__packed__)) {
 } task_stack_t;
 
 typedef struct {
+	task_stack_t stack __attribute__ ((aligned(64)));
+	char stack_end[0];
+
 	int task_id;
 	int state;
 	uint32_t cr3;
-	task_stack_t stack __attribute__ ((aligned(64)));
-	char stack_end[0];
 } task_t;
 
 /* Create a new task and switch to it */
