@@ -33,11 +33,26 @@ int create_task() {
    task->state = 0;
    task->cr3 = virtual_memory_new_dir();
 
+   /* initialize stack */
    task->stack.cs = 0x1B;
+   task->stack.ds = 0x23;
    task->stack.es = 0x23;
    task->stack.ss = 0x23;
-   task->stack.ds = 0x23;
+
    task->stack.eip = 0x08000000;
+
+   task->stack.edi = 0;
+   task->stack.esi = 0;
+   task->stack.ebp = 0;
+   task->stack.esp_discarded = 0;
+   task->stack.ebx = 0;
+   task->stack.edx = 0;
+   task->stack.ecx = 0;
+   task->stack.eax = 0;
+   task->stack.eflags = 0;
+   task->stack.esp = 0;
+
+   task->stack.error_code = 0;
 
    set_task(task_id);
 
