@@ -2,6 +2,6 @@
 *.a
 build/
 kernel/kernel.bin
-boot/boot.bin
+service/*/*.bin
 tools/makegdt
 tmp/

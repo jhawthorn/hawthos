@@ -2,9 +2,9 @@ TOOLCHAIN=i686-elf-5.2.0-Linux-x86_64
 export PATH := $(shell pwd)/build/$(TOOLCHAIN)/bin:$(PATH)
 
 QEMUFLAGS=-display curses -serial mon:stdio -monitor telnet::45454,server,nowait
-QEMUARGS=-kernel kernel/kernel.bin -initrd boot/boot.bin,boot/boot.bin
+QEMUARGS=-kernel kernel/kernel.bin -initrd service/boot/boot.bin,service/boot/boot.bin
 
-all: kernel boot
+all: kernel services
 
 test: all
 	qemu-system-i386 $(QEMUARGS) $(QEMUFLAGS)
@@ -22,15 +22,16 @@ test_bochs: build/test.iso
 libc:
 	$(MAKE) -C libc
 
-boot: libc
-	$(MAKE) -C boot
+services: service
+service: libc
+	$(MAKE) -C service
 
 kernel:
 	$(MAKE) -C kernel
 
 build/test.iso: all
 	mkdir -p build/iso/boot/grub
-	cp boot/boot.bin build/iso/boot/boot.bin
+	cp service/boot/boot.bin build/iso/boot/boot.bin
 	cp kernel/kernel.bin build/iso/boot/kernel.bin
 	cp .grub.cfg build/iso/boot/grub/grub.cfg
 	grub-mkrescue -o build/test.iso build/iso
@@ -43,10 +44,10 @@ toolchain:
 
 clean:
 	$(MAKE) -C kernel clean
-	$(MAKE) -C boot clean
+	$(MAKE) -C service clean
 	$(MAKE) -C libc clean
 
 veryclean: clean
 	rm -Rf build
 
-.PHONY: all clean kernel boot test libc
+.PHONY: all clean kernel service test libc
