@@ -2,7 +2,7 @@ TOOLCHAIN=i686-elf-5.2.0-Linux-x86_64
 export PATH := $(shell pwd)/build/$(TOOLCHAIN)/bin:$(PATH)
 
 QEMUFLAGS=-display curses -serial mon:stdio -monitor telnet::45454,server,nowait
-QEMUARGS=-kernel kernel/kernel.bin -initrd service/boot/boot.bin,service/boot/boot.bin
+QEMUARGS=-kernel kernel/kernel.bin -initrd service/boot/boot.bin,service/ping/ping.bin
 
 all: kernel services
 

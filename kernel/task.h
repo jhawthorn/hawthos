@@ -33,6 +33,7 @@ typedef enum {
 	TASK_NONE = 0,
 	TASK_RUNNING = 1,
 	TASK_EXITED = 2,
+	TASK_IPC_RECV = 3,
 } task_state_t;
 
 typedef struct {
@@ -47,6 +48,7 @@ typedef struct {
 /* Create a new task and switch to it */
 int create_task();
 task_t *current_task();
+task_t *get_task(int task_id);
 void set_task(int task_id);
 _Noreturn void return_to_task();
 void switch_to_next_running_task();

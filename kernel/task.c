@@ -9,7 +9,6 @@ task_t tasks[32] __attribute__ ((aligned(64)));
 int current_task_id = 0;
 int total_tasks = 0;
 
-
 void set_task(int task_id) {
    current_task_id = task_id;
 
@@ -19,6 +18,14 @@ void set_task(int task_id) {
 
 task_t *current_task() {
    return &tasks[current_task_id];
+}
+
+task_t *get_task(int task_id) {
+   if (task_id >= 0 && task_id < total_tasks) {
+      return &tasks[task_id];
+   } else {
+      return 0;
+   }
 }
 
 int create_task() {

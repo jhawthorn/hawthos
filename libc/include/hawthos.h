@@ -9,5 +9,11 @@
 #define SYSCALL_YIELD      0x1003
 #define SYSCALL_EXIT       0x1004
 
+#define SYSCALL_IPC_SEND   0x1005
+#define SYSCALL_IPC_RECV   0x1006
+
 uint32_t syscall(uint32_t number, uint32_t arg1, uint32_t arg2, uint32_t arg3, uint32_t *out);
 void yield();
+
+int ipc_send(uint32_t task_id, uint32_t value);
+int ipc_recv(uint32_t task_id, uint32_t *value);
