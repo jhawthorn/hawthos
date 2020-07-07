@@ -1,7 +1,10 @@
-.macro define_isr num
+.macro define_isr num, error=0
 .global isr\num
 .align 16
 isr\num:
+.if \error == 0
+push $0
+.endif
 pusha
 cld
 push %ds
@@ -16,6 +19,7 @@ add $8, %esp
 pop %es
 pop %ds
 popa
+add $4, %esp
 iret
 .endm
 
@@ -27,16 +31,16 @@ define_isr 4
 define_isr 5
 define_isr 6
 define_isr 7
-define_isr 8
+define_isr 8, 1
 define_isr 9
-define_isr 10
-define_isr 11
-define_isr 12
-define_isr 13
-define_isr 14
+define_isr 10, 1
+define_isr 11, 1
+define_isr 12, 1
+define_isr 13, 1
+define_isr 14, 1
 define_isr 15
 define_isr 16
-define_isr 17
+define_isr 17, 1
 define_isr 18
 define_isr 19
 define_isr 20
@@ -49,7 +53,7 @@ define_isr 26
 define_isr 27
 define_isr 28
 define_isr 29
-define_isr 30
+define_isr 30, 1
 define_isr 31
 define_isr 32
 define_isr 33
