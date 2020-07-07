@@ -6,6 +6,7 @@
 #include "pic.h"
 #include "page_allocator.h"
 #include "virtual_memory.h"
+#include "task.h"
 
 void load_gdt();
 void load_idt();

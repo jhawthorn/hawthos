@@ -21,28 +21,6 @@ void handle_irq(uint32_t irq) {
    pic_eoi(irq);
 }
 
-#define DUMP_REGISTER(name) \
-   print(#name ": 0x"); \
-   printnum(stack->name, 16); \
-   print("\n");
-
-static void dump_task_registers(task_stack_t *stack) {
-   DUMP_REGISTER(es)
-   DUMP_REGISTER(ds)
-   DUMP_REGISTER(edi)
-   DUMP_REGISTER(esi)
-   DUMP_REGISTER(ebp)
-   DUMP_REGISTER(ebx)
-   DUMP_REGISTER(edx)
-   DUMP_REGISTER(ecx)
-   DUMP_REGISTER(eax)
-   DUMP_REGISTER(eip)
-   DUMP_REGISTER(cs)
-   DUMP_REGISTER(eflags)
-   DUMP_REGISTER(esp)
-   DUMP_REGISTER(ss)
-}
-
 #define INT_GENERAL_PROTECTION_FAULT 0xd
 #define INT_PAGE_FAULT 0xe
 
@@ -85,5 +63,3 @@ void handle_interrupt(uint32_t interrupt, task_stack_t *stack) {
    printnum(interrupt, 16);
    print("\n");
 }
-
-#undef DUMP_REGISTER

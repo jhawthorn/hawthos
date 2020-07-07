@@ -29,6 +29,18 @@ typedef struct __attribute__((__packed__)) {
 	uint32_t ss;
 } task_stack_t;
 
+typedef struct {
+	int task_id;
+	int state;
+	uint32_t cr3;
+	task_stack_t stack __attribute__ ((aligned(64)));
+	char stack_end[0];
+} task_t;
+
 /* Create a new task and switch to it */
 int create_task();
+task_t *current_task();
 void set_task(int task_id);
+void return_to_task();
+
+void dump_task_registers(task_stack_t *stack);
