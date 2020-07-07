@@ -8,5 +8,7 @@
 int main() {
 	printf("hello%c %s\n", ',', "world");
 	yield();
+	printf("again\n");
+	yield();
 	return 0;
 }
