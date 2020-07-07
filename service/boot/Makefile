@@ -13,9 +13,6 @@ all: $(TARGET)
 %.o: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
-%.o: %.s
-	$(AS) $(ASFLAGS) -o $@ $<
-
 $(TARGET): $(OBJECTS) linker.ld $(LIBCDIR)/libc.a
 	$(CC) -T linker.ld -o $(TARGET) -ffreestanding -nostdlib $(CFLAGS) $(OBJECTS) -L$(LIBCDIR) -l c
 
