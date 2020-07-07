@@ -12,10 +12,13 @@ push %es
 mov $0x10, %cx
 mov %cx, %ds
 mov %cx, %es
-push %esp
+mov %esp, %eax
+movl $stack_top, %esp
+push %eax
 push $\num
 call handle_interrupt
-add $8, %esp
+add $4, %esp
+pop %esp
 pop %es
 pop %ds
 popa

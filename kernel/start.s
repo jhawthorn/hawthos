@@ -71,6 +71,7 @@ bss_loop:
 .size _start, . - _start
 
 .section .bss
+.global stack_top
 .align 32
 stack_bottom:
 .skip 0x1000 # 4 KiB
