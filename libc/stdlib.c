@@ -57,3 +57,7 @@ void *realloc(void *ptr, size_t size) {
 	free(ptr);
 	return new_ptr;
 }
+
+void exit(int status) {
+	syscall(SYSCALL_EXIT, status, 0, 0, 0);
+}

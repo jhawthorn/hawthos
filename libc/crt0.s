@@ -14,7 +14,5 @@ _start:
 	movl $(STACK_TOP), %esp
 
 	call pre_main
-
-	call main
 loop:
 	jmp loop
