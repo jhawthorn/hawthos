@@ -31,3 +31,4 @@ typedef struct __attribute__((__packed__)) {
 
 /* Create a new task and switch to it */
 int create_task();
+void set_task(int task_id);
