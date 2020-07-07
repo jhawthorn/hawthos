@@ -7,6 +7,6 @@
 
 int main() {
 	printf("hello%c %s\n", ',', "world");
-	syscall(0x1002, 0, 0, 0, 0);
+	yield();
 	return 0;
 }

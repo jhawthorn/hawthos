@@ -28,6 +28,13 @@ uint32_t handle_syscall(uint32_t number, uint32_t arg1, uint32_t arg2, uint32_t 
       case SYSCALL_DUMP_REGS:
 	 dump_task_registers(&current_task()->stack);
 	 return SYSCALL_SUCCESS;
+      case SYSCALL_YIELD:
+	 set_task(next_task_id());
+	 return_to_task();
+	 return SYSCALL_SUCCESS;
+      default:
+	 print("Unknown syscall\n");
+	 return SYSCALL_FAILURE;
    };
 
    return SYSCALL_FAILURE;
