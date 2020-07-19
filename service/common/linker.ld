@@ -1,4 +1,5 @@
 ENTRY(_start)
+STARTUP(crt0.o)
 OUTPUT_FORMAT(binary)
 
 SECTIONS {
