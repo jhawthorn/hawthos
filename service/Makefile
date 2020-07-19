@@ -1,4 +1,4 @@
-SERVICES=boot ping
+SERVICES=boot ping keyboard
 
 all:
 	for dir in $(SERVICES); do make -C "$$dir"; done
