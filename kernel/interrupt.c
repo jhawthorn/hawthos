@@ -33,6 +33,8 @@ void handle_interrupt(uint32_t interrupt) {
       print("Page fault at: 0x");
       printnum(address, 16);
       print("\n");
+
+      exit_current_task();
       return;
    } else if(interrupt == INT_GENERAL_PROTECTION_FAULT) {
       print("General protection fault in ");
