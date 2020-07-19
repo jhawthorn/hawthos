@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+if ARGV.length != 1
+  warn "USAGE: #$0 <SERVICE>"
+  exit 1
+end
+
+name = ARGV[0]
+
+require "fileutils"
+FileUtils.mkdir("service/#{name}")
+File.write("service/#{name}/Makefile", <<MAKEFILE)
+SERVICE=#{name}
+OBJECTS=#{name}.o
+
+include ../common/rules.mk
+MAKEFILE
+
+File.write("service/#{name}/#{name}.c", <<CSRC)
+int main() {
+	return 0;
+}
+CSRC
+
+File.write("service/Makefile", File.read("service/Makefile").gsub(/^SERVICES=.*$/, "\\0 #{name}"))
