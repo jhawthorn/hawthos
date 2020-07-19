@@ -11,3 +11,13 @@ int ipc_send(uint32_t task_id, uint32_t value) {
 int ipc_recv(uint32_t task_id, uint32_t *value) {
 	return !!syscall(SYSCALL_IPC_RECV, task_id, 0, 0, value);
 }
+
+uint8_t io_inb(uint16_t port) {
+	uint32_t ret;
+	syscall(SYSCALL_INB, port, 0, 0, &ret);
+	return ret;
+}
+
+void io_outb(uint16_t port, uint8_t val) {
+	syscall(SYSCALL_INB, port, val, 0, 0);
+}

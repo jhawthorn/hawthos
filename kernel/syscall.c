@@ -5,6 +5,7 @@
 #include "syscall.h"
 #include "task.h"
 #include "virtual_memory.h"
+#include "io.h"
 
 uint32_t handle_syscall(uint32_t number, uint32_t arg1, uint32_t arg2, uint32_t arg3, uint32_t *ret) {
    (void) arg2, (void) arg3, (void) ret;
@@ -48,6 +49,12 @@ uint32_t handle_syscall(uint32_t number, uint32_t arg1, uint32_t arg2, uint32_t 
       case SYSCALL_IPC_RECV:
 	 current_task()->state = TASK_IPC_RECV;
 	 switch_to_next_running_task();
+	 return SYSCALL_SUCCESS;
+      case SYSCALL_INB:
+	 *ret = inb(arg1);
+	 return SYSCALL_SUCCESS;
+      case SYSCALL_OUTB:
+	 outb(arg1, arg2);
 	 return SYSCALL_SUCCESS;
       default:
 	 print("Unknown syscall\n");
