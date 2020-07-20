@@ -1,4 +1,4 @@
 SERVICE=keyboard
-OBJECTS=keyboard.o
+OBJECTS=keyboard.o scancode.o
 
 include ../common/rules.mk

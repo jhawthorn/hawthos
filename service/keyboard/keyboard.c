@@ -2,6 +2,8 @@
 
 #include <hawthos.h>
 
+#include "keyboard.h"
+
 #define KEYBOARD_DATA    0x60
 #define KEYBOARD_STATUS  0x64
 #define KEYBOARD_COMMAND 0x64
@@ -100,7 +102,10 @@ int main() {
 
 	for(;;) {
 		uint8_t scancode = kbd_read();
-		printf("keyboard: %x\n", scancode);
+		char ascii = convert_scancode(scancode);
+		if (ascii) {
+			putchar(ascii);
+		}
 	}
 
 	return 0;
