@@ -3,5 +3,6 @@
 build/
 kernel/kernel.bin
 service/*/*.bin
+service/services.list
 tools/makegdt
 tmp/

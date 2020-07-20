@@ -2,16 +2,26 @@ TOOLCHAIN=i686-elf-5.2.0-Linux-x86_64
 export PATH := $(shell pwd)/build/$(TOOLCHAIN)/bin:$(PATH)
 
 QEMUFLAGS=-display curses -serial mon:stdio -monitor telnet::45454,server,nowait
-QEMUARGS=-kernel kernel/kernel.bin -initrd service/boot/boot.bin,service/ping/ping.bin,service/keyboard/keyboard.bin
 
 all: kernel services
 
-test: all
-	qemu-system-i386 $(QEMUARGS) $(QEMUFLAGS)
+build/qemu_args: services service/services.list
+	{ \
+		echo '-kernel kernel/kernel.bin'; \
+		echo '-initrd service/boot/boot.bin,service/ping/ping.bin,service/keyboard/keyboard.bin,'; \
+		echo -n '-initrd '; \
+		for dir in $$(cat service/services.list); do \
+			echo -n "service/$$dir/$$dir.bin,"; \
+		done; \
+		echo; \
+	} > build/qemu_args
 
-test_qemu_debug: all
+test: all build/qemu_args
+	qemu-system-i386 $$(cat build/qemu_args) $(QEMUFLAGS)
+
+test_qemu_debug: all build/qemu_args
 	@echo in another terminal run: gdb
-	qemu-system-i386 -S -s $(QEMUARGS) $(QEMUFLAGS)
+	qemu-system-i386 -S -s $$(cat build/qemu_args) $(QEMUFLAGS)
 
 test_cdrom: build/test.iso
 	qemu-system-i386 -cdrom build/test.iso $(QEMUFLAGS)
@@ -31,9 +41,18 @@ kernel:
 
 build/test.iso: all
 	mkdir -p build/iso/boot/grub
-	cp service/boot/boot.bin build/iso/boot/boot.bin
+	for dir in $$(cat service/services.list); do cp "service/$$dir/$$dir.bin" build/iso/boot/; done
 	cp kernel/kernel.bin build/iso/boot/kernel.bin
-	cp .grub.cfg build/iso/boot/grub/grub.cfg
+	{ \
+		echo 'set timeout=0'; \
+		echo 'set default=0'; \
+		echo 'menuentry "HawthOS" {'; \
+		echo 'multiboot /boot/kernel.bin'; \
+		for dir in $$(cat service/services.list); do \
+			echo "module /boot/$$dir.bin"; \
+		done; \
+		echo '}'; \
+	} > build/iso/boot/grub/grub.cfg
 	grub-mkrescue -o build/test.iso build/iso
 
 toolchain:
