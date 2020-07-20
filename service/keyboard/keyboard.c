@@ -100,7 +100,7 @@ int main() {
 
 	for(;;) {
 		uint8_t scancode = kbd_read();
-		printf("keyboard: %i\n", kbd_read());
+		printf("keyboard: %x\n", scancode);
 	}
 
 	return 0;
