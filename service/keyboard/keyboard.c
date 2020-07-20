@@ -72,6 +72,18 @@ void kbd_dummy_read() {
 
 #define CMD_SELF_TEST   0xAA
 
+void restart_system() {
+	kbd_cmd0(0xFe);
+}
+
+void shutdown_system() {
+	io_outw(0xB004, 0x2000); /* Shutdown Bochs, old qemu */
+	io_outw(0x604,  0x2000);  /* Shutdown newer qemu */
+	io_outw(0x4004, 0x3400); /* Shutdown VirtualBox */
+
+	restart_system();     /* No luck? Just reboot */
+}
+
 int main() {
 	printf("keyboard!\n");
 
@@ -104,6 +116,12 @@ int main() {
 		uint8_t scancode = kbd_read();
 		char ascii = convert_scancode(scancode);
 		if (ascii) {
+			/* TESTING: shutdown if escape is pressed */
+			if (ascii == 27) {
+				printf("restarting system...\n");
+				shutdown_system();
+			}
+
 			putchar(ascii);
 		}
 	}
