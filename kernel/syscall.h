@@ -14,3 +14,5 @@ uint32_t handle_syscall(uint32_t number, uint32_t arg1, uint32_t arg2, uint32_t 
 
 #define SYSCALL_INB        0x1010
 #define SYSCALL_OUTB       0x1011
+#define SYSCALL_INW        0x1012
+#define SYSCALL_OUTW       0x1013

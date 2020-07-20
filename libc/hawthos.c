@@ -21,3 +21,13 @@ uint8_t io_inb(uint16_t port) {
 void io_outb(uint16_t port, uint8_t val) {
 	syscall(SYSCALL_OUTB, port, val, 0, 0);
 }
+
+uint16_t io_inw(uint16_t port) {
+	uint32_t ret;
+	syscall(SYSCALL_INW, port, 0, 0, &ret);
+	return ret;
+}
+
+void io_outw(uint16_t port, uint16_t val) {
+	syscall(SYSCALL_OUTW, port, val, 0, 0);
+}

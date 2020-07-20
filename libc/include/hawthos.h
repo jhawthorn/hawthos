@@ -14,6 +14,8 @@
 
 #define SYSCALL_INB        0x1010
 #define SYSCALL_OUTB       0x1011
+#define SYSCALL_INW        0x1012
+#define SYSCALL_OUTW       0x1013
 
 uint32_t syscall(uint32_t number, uint32_t arg1, uint32_t arg2, uint32_t arg3, uint32_t *out);
 void yield();
@@ -23,3 +25,5 @@ int ipc_recv(uint32_t task_id, uint32_t *value);
 
 uint8_t io_inb(uint16_t port);
 void io_outb(uint16_t port, uint8_t val);
+uint16_t io_inw(uint16_t port);
+void io_outw(uint16_t port, uint16_t val);
