@@ -85,8 +85,6 @@ void shutdown_system() {
 }
 
 int main() {
-	printf("keyboard!\n");
-
 	uint8_t ccb;
 
 	kbd_dummy_read();
@@ -118,7 +116,6 @@ int main() {
 		if (ascii) {
 			/* TESTING: shutdown if escape is pressed */
 			if (ascii == 27) {
-				printf("restarting system...\n");
 				shutdown_system();
 			}
 
