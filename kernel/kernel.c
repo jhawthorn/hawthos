@@ -45,13 +45,6 @@ void kernel_main() {
 		uint32_t mod_start = mods[i].mod_start;
 		uint32_t mod_end   = mods[i].mod_end;
 
-		print((char *)(mods[i].cmdline + KERNEL_VIRTUAL_BASE));
-		print(":");
-		printnum(mod_start, 16);
-		print(" - ");
-		printnum(mod_end, 16);
-		print("\n");
-
 		int task_id = create_task();
 		set_task(task_id);
 		for (uint32_t page = 0; page < mod_end - mod_start; page += 0x1000) {
