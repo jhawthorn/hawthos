@@ -1,4 +1,4 @@
-SERVICES=boot ping keyboard
+SERVICES=boot ping keyboard shell
 
 all: services.list
 	for dir in $(SERVICES); do make -C "$$dir"; done
