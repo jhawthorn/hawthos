@@ -7,6 +7,8 @@
 #define SYSCALL_IPC_SEND   0x1005
 #define SYSCALL_IPC_RECV   0x1006
 
+#define SYSCALL_GET_TID    0x1007
+
 #define SYSCALL_INB        0x1010
 #define SYSCALL_OUTB       0x1011
 #define SYSCALL_INW        0x1012

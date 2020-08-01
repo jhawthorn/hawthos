@@ -64,6 +64,9 @@ uint32_t handle_syscall(uint32_t number, uint32_t arg1, uint32_t arg2, uint32_t 
       case SYSCALL_OUTW:
 	 outw(arg1, arg2);
 	 return SYSCALL_SUCCESS;
+      case SYSCALL_GET_TID:
+	 *ret = current_task()->task_id;
+	 return SYSCALL_SUCCESS;
       default:
 	 print("Unknown syscall\n");
 	 return SYSCALL_FAILURE;

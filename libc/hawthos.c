@@ -31,3 +31,9 @@ uint16_t io_inw(uint16_t port) {
 void io_outw(uint16_t port, uint16_t val) {
 	syscall(SYSCALL_OUTW, port, val, 0, 0);
 }
+
+tid_t get_tid() {
+	uint32_t ret;
+	syscall(SYSCALL_GET_TID, 0, 0, 0, &ret);
+	return ret;
+}
