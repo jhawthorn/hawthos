@@ -4,8 +4,15 @@ void yield() {
 	syscall(SYSCALL_YIELD, 0, 0, 0, 0);
 }
 
-int ipc_send(uint32_t task_id, uint32_t value) {
+int ipc_send_async(uint32_t task_id, uint32_t value) {
 	return !!syscall(SYSCALL_IPC_SEND, task_id, value, 0, 0);
+}
+
+int ipc_send(uint32_t task_id, uint32_t value) {
+	while (ipc_send_async(task_id, value)) {
+		yield();
+	}
+	return 0;
 }
 
 int ipc_recv(uint32_t task_id, uint32_t *value) {
