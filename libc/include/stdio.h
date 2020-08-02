@@ -25,4 +25,6 @@ int vprint(const char *format, va_list ap);
 int fprintf(FILE *stream, const char *fmt, ...);
 int printf(const char *fmt, ...);
 
+int fflush(FILE *stream);
+
 #define putc(c, stream) fputc(c, stream)

@@ -133,3 +133,8 @@ int printf(const char *format, ...) {
 	va_end(args);
 	return ret;
 }
+
+int fflush(FILE *file) {
+	(void) file;
+	return 0;
+}
