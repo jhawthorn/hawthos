@@ -42,6 +42,7 @@ uint32_t handle_syscall(uint32_t number, uint32_t arg1, uint32_t arg2, uint32_t 
 	    task_t *target = get_task(arg1);
 	    if (target && target->state == TASK_IPC_RECV) {
 	       target->stack.ebx = arg2;
+	       target->state = TASK_RUNNING;
 	       set_task(target->task_id);
 	       return SYSCALL_SUCCESS;
 	    } else {
