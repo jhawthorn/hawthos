@@ -11,6 +11,9 @@ int $0x80
 _start:
 	# Allocate the last pages of userspace to use as the top of our stack
 	syscall1 $0x1001, $(STACK_TOP - 0x1000)
+	syscall1 $0x1001, $(STACK_TOP - 0x2000)
+	syscall1 $0x1001, $(STACK_TOP - 0x3000)
+	syscall1 $0x1001, $(STACK_TOP - 0x4000)
 	movl $(STACK_TOP), %esp
 
 	call pre_main
