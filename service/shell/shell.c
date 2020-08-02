@@ -15,14 +15,7 @@ int getchar() {
 	return (int)ret;
 }
 
-
-#define CMD_MAX_LENGTH 4096
-
-// Max length of arguments including command itself and a NULL terminator.
-#define CMD_MAX_ARGS 32
-
-#define SHELL_NAME "hsh"
-#define PROMPT "$ "
+#include "hsh.h"
 
 void hsh_exec(char *buf) {
 	int argc = 0;
@@ -40,7 +33,10 @@ void hsh_exec(char *buf) {
 		return;
 	}
 
-	fprintf(stderr, SHELL_NAME ": command not found: %s\n", argv[0]);
+	int ret = hsh_exec_builtin(argc, argv);
+	if (ret == -1) {
+		fprintf(stderr, SHELL_NAME ": command not found: %s\n", argv[0]);
+	}
 }
 
 void run() {
