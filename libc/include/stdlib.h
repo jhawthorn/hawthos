@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stddef.h>
 
 int brk(void *addr);
 void *sbrk(intptr_t increment);
