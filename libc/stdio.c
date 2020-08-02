@@ -19,7 +19,7 @@ int putchar(int c) {
 }
 
 int fputc(int c, FILE *stream) {
-	if (stream == stdin || stream == stdout) {
+	if (stream == stdout || stream == stderr) {
 		if (putchar(c))
 			return EOF;
 		return 0;
@@ -36,7 +36,7 @@ int fputs(const char *s, FILE *stream) {
 }
 
 int puts(const char *s) {
-	return fputs(s, stdin);
+	return fputs(s, stdout);
 }
 
 static const char *hex_lower_chars = "0123456789abcdef";
