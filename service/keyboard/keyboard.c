@@ -84,6 +84,14 @@ void shutdown_system() {
 	restart_system();     /* No luck? Just reboot */
 }
 
+void process_char(char c) {
+	putchar(c);
+
+	tid_t tid;
+	ipc_recv(0, &tid);
+	ipc_send(tid, c);
+}
+
 int main() {
 	uint8_t ccb;
 
@@ -119,7 +127,8 @@ int main() {
 				shutdown_system();
 			}
 
-			putchar(ascii);
+
+			process_char(ascii);
 		}
 	}
 
