@@ -14,8 +14,6 @@ void load_idt();
 /* Address set from start.s */
 uint32_t multiboot_info_addr;
 
-void jump_usermode(uint32_t);
-
 #define USER_VIRT_ADDRESS 0x08000000
 
 #define BOCHS_BREAK asm volatile ( "xchgw %bx, %bx" )
